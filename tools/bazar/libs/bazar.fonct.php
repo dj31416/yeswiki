@@ -1388,6 +1388,17 @@ function baz_requete_bazar_fiche($valpost)
         $fiche = str_replace('src="tools', 'src="'.$lien.'/tools', baz_voir_fiche(0, $valpost)).$texthtml;
         $html = '<html><head><style type="text/css">'.$style.'</style></head><body>'.$fiche.'</body></html>';
 
+        if (isset($valpost['templatemail'])) {
+            $templatetoload = 'themes/tools/bazar/templates/' . $valpost['templatemail'];
+            if (is_file($templatetoload)) {
+                include_once 'tools/libs/squelettephp.class.php';
+                $mail = new SquelettePhp($templatetoload);
+                $mail->set($valpost);
+                $html = _convert($mail->analyser(), YW_CHARSET);
+                $text = strip_tags($html);
+            }
+        }
+
         send_mail(BAZ_ADRESSE_MAIL_ADMIN, BAZ_ADRESSE_MAIL_ADMIN, $destmail, $sujet, $text, $html);
     }
 

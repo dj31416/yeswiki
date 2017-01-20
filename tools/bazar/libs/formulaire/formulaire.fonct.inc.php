@@ -1174,13 +1174,15 @@ function champs_mail(&$formtemplate, $tableau_template, $mode, $valeurs_fiche)
         $input_html.= ' maxlength="' . $nb_max_car . '" size="' . $nb_max_car . '"';
         $input_html.= ($obligatoire == 1) ? ' required="required"' : '';
         $input_html.= '>' . "\n" . '</div>' . "\n" . '</div>' . "\n";
-        if ($sendmail == 1) {
+        if ($sendmail !== 0) {
             $formtemplate->addElement('hidden', 'sendmail', $identifiant);
+            $formtemplate->addElement('hidden', 'templatemail', $sendmail);
         }
         $formtemplate->addElement('html', $input_html);
     } elseif ($mode == 'requete') {
-        if ($sendmail == 1) {
+        if ($sendmail !== 0) {
             $valeurs_fiche['sendmail'] = $identifiant;
+            $valeurs_fiche['templatemail'] = $sendmail;
         }
         return array($tableau_template[1] => isset($valeurs_fiche[$tableau_template[1]]) ? $valeurs_fiche[$tableau_template[1]] : '');
     } elseif ($mode == 'recherche') {
@@ -2432,7 +2434,7 @@ function listefiches(&$formtemplate, $tableau_template, $mode, $valeurs_fiche)
     if (isset($valeurs_fiche['id_fiche']) && $mode == 'saisie') {
         $actionbazarliste = '{{bazarliste id="' . $tableau_template[1] . '" query="' . $query . '" nb="' . $nb . '" ' . $otherparams . ' template="' . $template . '"}}';
         $html = '<span class="BAZ_texte">'.$GLOBALS['wiki']->Format($actionbazarliste).'</span>';
-        
+
         //ajout lien nouvelle saisie
         $url_checkboxfiche = clone ($GLOBALS['_BAZAR_']['url']);
         $url_checkboxfiche->removeQueryString('id_fiche');
