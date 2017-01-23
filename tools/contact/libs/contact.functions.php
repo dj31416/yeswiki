@@ -61,6 +61,7 @@ function send_mail($mail_sender, $name_sender, $mail_receiver, $subject, $messag
     require_once('tools/contact/libs/vendor/PHPMailer/PHPMailerAutoload.php');
     //Create a new PHPMailer instance
     $mail = new PHPMailer;
+    $mail->set('CharSet', 'utf-8');
 
     if ($GLOBALS['wiki']->config['contact_mail_func'] == 'smtp') {
         //Tell PHPMailer to use SMTP

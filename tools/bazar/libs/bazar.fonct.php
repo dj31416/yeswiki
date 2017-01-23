@@ -1394,8 +1394,8 @@ function baz_requete_bazar_fiche($valpost)
                 include_once 'tools/libs/squelettephp.class.php';
                 $mail = new SquelettePhp($templatetoload);
                 $mail->set($valpost);
-                $html = _convert($mail->analyser(), YW_CHARSET);
-                $text = strip_tags($html);
+                $html = $mail->analyser();
+                $text = trim(strip_tags($html));
             }
         }
 
