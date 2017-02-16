@@ -815,7 +815,7 @@ function baz_afficher_formulaire_export()
 
     // CSV file headers
     //$csv = substr(trim($csv), 0, -1)."\r\n";
-    $csv = '"date_create","time_create","date_latest","time_latest",'.substr(trim($csv), 0, -1)."\n";
+    $csv = '"datetime_create","datetime_latest",'.substr(trim($csv), 0, -1)."\n";
 
     // TODO : inscription liste
     //on recupere toutes les fiches du type choisi et on les met au format csv
@@ -874,8 +874,8 @@ function baz_afficher_formulaire_export()
         }
 
         //$csv .= implode(',', $tab_csv)."\r\n";
-        $csv.= date_format($fiche_time_create, '"d/m/Y","H:i:s"')
-            .','.date_format($fiche_time_latest, '"d/m/Y","H:i:s"')
+        $csv.= date_format($fiche_time_create, 'd/m/Y H:i:s')
+            .','.date_format($fiche_time_latest, 'd/m/Y H:i:s')
             .','.implode(',', $tab_csv)."\n";
     }
 
