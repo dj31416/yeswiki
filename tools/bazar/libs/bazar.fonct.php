@@ -826,8 +826,35 @@ function baz_afficher_formulaire_export()
         $val_formulaire['bn_type_fiche']
     );
     $total = count($tableau_fiches);
-    foreach ($tableau_fiches as $fiche) {
+
+    /// Horrible hack pour trier le trableau pas date de création
+    foreach ($tableau_fiches as $key => $fiche) {
         // create date and latest date
+        $tableau_fiches[$key]['time_create'] =
+            date_create_from_format(
+                'Y-m-d H:i:s',
+                $GLOBALS['wiki']->GetPageCreateTime($fiche['tag'])
+            )->getTimestamp();
+    }
+
+    usort(
+        $tableau_fiches,
+        function ($fiche1, $fiche2)
+        {
+            if ($fiche1['time_create'] === $fiche2['time_create']) {
+                return 0;
+            }
+
+            if ($fiche1['time_create'] > $fiche2['time_create']) {
+                return 1000;
+            }
+
+            return -1000;
+        }
+    );
+    /// Fin horrible Hack pour trier le trableau pas date de création
+
+    foreach ($tableau_fiches as $fiche) {
         $fiche_time_create = date_create_from_format('Y-m-d H:i:s', $GLOBALS['wiki']->GetPageCreateTime($fiche['tag']));
         $fiche_time_latest = date_create_from_format('Y-m-d H:i:s', $fiche['time']);
 
